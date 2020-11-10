@@ -1,0 +1,71 @@
+<app-navbar></app-navbar>
+<div class="container">
+   <div class="div" *ngIf="spinner">
+      <div class="spinner-border text-danger mt-5" role="status">
+         <span class="sr-only">Loading...</span>
+       </div>
+   </div>
+   <div class="div mb-5" *ngIf="!spinner">
+
+      <div class="row mt-5">
+         <div class="col-md-3">
+            <img class="rounded" src="{{character.thumbnail.path}}/portrait_small.{{character.thumbnail.extension}}" height="250px">
+         </div>
+         <div class="col-md-9">
+            <div class="row"><h2 class="font-weight-bold deep-orange-lighter-hover mb-3">{{character.name}}</h2></div>
+            <div class="row mt-5">{{character.description ? character.description : 'There are no description for this character'}}</div>
+         </div>
+      </div>
+
+
+      <div class="row mt-5 mb-5">
+         <mat-accordion style="width: 100%;">
+
+            <mat-expansion-panel >
+               <mat-expansion-panel-header>
+                 <mat-panel-title>Comics</mat-panel-title>
+                 <mat-panel-description>Here you can see a summary of the comics for this character</mat-panel-description>
+               </mat-expansion-panel-header>
+               <p *ngIf="character.comics.available == 0">There are no comics for this character</p>
+               <ul>
+                  <li *ngFor="let com of character.comics.items">{{com.name}}</li>
+              </ul>
+             </mat-expansion-panel>
+
+            <mat-expansion-panel >
+              <mat-expansion-panel-header>
+                <mat-panel-title>Events</mat-panel-title>
+                <mat-panel-description>Here you can see a summary of the events for this character</mat-panel-description>
+              </mat-expansion-panel-header>
+              <p *ngIf="character.events.available == 0">There are no events for this character</p>
+               <ul>
+                  <li *ngFor="let eve of character.events.items">{{eve.name}}</li>
+              </ul>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel >
+              <mat-expansion-panel-header>
+                <mat-panel-title>Series</mat-panel-title>
+                <mat-panel-description>Here you can see a summary of the series for this character</mat-panel-description>
+              </mat-expansion-panel-header>
+              <p *ngIf="character.series.available == 0">There are no events for this character</p>
+               <ul>
+                  <li *ngFor="let ser of character.series.items">{{ser.name}}</li>
+              </ul>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel >
+               <mat-expansion-panel-header>
+                 <mat-panel-title>Stories</mat-panel-title>
+                 <mat-panel-description>Here you can see a summary of the stories for this character</mat-panel-description>
+               </mat-expansion-panel-header>
+               <p *ngIf="character.stories.available == 0">There are no events for this character</p>
+               <ul>
+                  <li *ngFor="let sto of character.stories.items">{{sto.name}}</li>
+              </ul>
+             </mat-expansion-panel>
+          </mat-accordion>          
+      </div>
+
+   </div>
+</div>

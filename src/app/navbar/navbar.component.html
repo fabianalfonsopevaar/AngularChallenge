@@ -1,0 +1,16 @@
+  <!-- Just an image -->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color-dark">
+    <mdb-navbar-brand>
+        <a class="navbar-brand" href="/">
+            <img src="../../assets/icons/marvel-icon-2.jpg" height="50" alt="">
+        </a>
+    </mdb-navbar-brand>
+    <links>
+        <form class="form-inline waves-light waves-light ml-auto">
+        <div class="md-form my-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchText" (ngModelChange)="outText()">
+            <button type="button" mdbBtn color="danger" rounded="true" size="sm"><mdb-icon fas icon="search"></mdb-icon></button>
+        </div>
+        </form>
+    </links>
+</mdb-navbar>

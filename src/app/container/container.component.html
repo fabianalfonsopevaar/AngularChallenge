@@ -1,0 +1,11 @@
+<app-navbar (newItemEvent)="outText($event)"></app-navbar>
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+          <app-characters [toDelete]="delete" [searchText]="inpText" (favEvent)="addFavorite($event)"></app-characters>
+        </div>
+        <div class="col-4">
+          <app-comics [favs]="favorites" (deleteEvent)="delEvent($event)"></app-comics>
+        </div>
+    </div>
+</div>

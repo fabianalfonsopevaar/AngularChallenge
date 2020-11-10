@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="row">
+    <div *ngIf="spinner" class="spinner-border text-danger mt-5" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <div  *ngIf="!spinner" class="div">
+      <div class="row mt-4">
+        <div class="col-md ">Characters</div>
+        <div class="col-md"></div>
+        <div class="col-md">
+          <select class="browser-default custom-select" (change)="handleSelect($event)">
+            <option selected>Order by</option>
+            <option value="1">Name A-Z</option>
+            <option value="2">Name Z-A</option>
+            <option value="3">Date</option>
+          </select>
+        </div>
+    </div>
+    <div class="row">
+        <div *ngFor="let char of data" class="col-md-6 mt-4">
+            
+            <!-- Card -->
+  <mdb-card>
+    <div class="view rgba-white-slight waves-light" mdbWavesEffect>
+      <!-- Card img -->
+        <!-- <img src="{{char.thumbnail.path}}/portrait_xlarge.{{char.thumbnail.extension}}"><img> -->
+        <mdb-card-img src="{{char.thumbnail.path}}/standard_small.{{char.thumbnail.extension}}"></mdb-card-img>
+      <a>
+        <div class="mask"></div>
+      </a>
+    </div>
+    <!--Card content-->
+    <mdb-card-body>
+      <!--Title-->
+      <mdb-card-title class="d-flex">
+        <h4><strong>{{char.name}}</strong></h4>
+        <h4 class="ml-4">
+            Modified:
+            {{char.modified}}
+        </h4>
+      </mdb-card-title>
+
+      <!--Text-->
+
+    <mdb-card-text>
+        <h5 class="indigo-text">
+            <strong>Description</strong>
+        </h5>
+        {{char.description ? char.description : 'No description aviable'}}
+        <hr>
+        <h5 class="indigo-text">
+            <strong>Comics</strong>
+        </h5>
+        {{char.comics.items.length == 0 ? 'There are no comics for this character':''}}
+        <ul>
+            <li *ngFor="let com of char.comics.items.slice(0,4)">
+              <a (click)="onClickComic(com.resourceURI)">{{com.name}}</a>
+            </li>
+        </ul>
+    </mdb-card-text>
+
+      <a routerLink="/details/{{char.id}}" mdbBtn color="primary" mdbWavesEffect>See details</a>
+    </mdb-card-body>
+  </mdb-card>
+  <!-- Card -->
+
+        </div>
+    </div>
+    <div class="row">
+        <mat-paginator [length]="characters.length"
+            [pageSize]="pageSize"
+            (page)="sliceData($event)">
+        </mat-paginator>
+    </div>
+  </div>
+
+</div>
