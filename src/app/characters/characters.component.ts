@@ -44,6 +44,9 @@ export class CharactersComponent implements OnInit {
     }})
     .then(response => {
         this.characters = response.data.data.results
+        this.characters.forEach(e => {
+          e.modified = this.formatDate(e.modified)
+        });
         this.data = this.characters.slice(0, this.pageSize)
         this.spinner = false
     })
@@ -52,6 +55,20 @@ export class CharactersComponent implements OnInit {
         console.log(e.response)
     })
   }
+
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
 
   addFavorite() {
     this.favEvent.emit(this.favorites);
