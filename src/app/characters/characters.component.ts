@@ -1,11 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter  } from '@angular/core';
-import {results} from './characters.js'
-import {PageEvent} from '@angular/material/paginator';
 import { ModalComponent } from '../modal/modal.component';
 import { MDBModalRef, MDBModalService } from 'ng-uikit-pro-standard';
 import axios from 'axios';
 import md5 from 'md5';
 import {environment} from '../../environments/environment'
+
 
 @Component({
   selector: 'app-characters',
@@ -17,31 +16,57 @@ export class CharactersComponent implements OnInit {
   characters = [] as any;
   data = [] as any;
   favorites = [] as any;
-  pageSize: any;
-  pageEvent: PageEvent;
   modalRef: MDBModalRef;
   spinner: boolean;
+
+  selectedOption: number;
+
+  pageSize: number;
+  pageNumber: number;
+  total: number;
+  offset: number;
+
   @Input() searchText: string;
   @Input() toDelete: string;
   @Output() favEvent = new EventEmitter<any[]>();
   constructor(private modalService: MDBModalService) {
+    this.spinner = true
+
+    this.selectedOption = 0;
+
     this.pageSize = 10;
-    this.spinner = true;
-    this.data = this.characters.slice(0,this.pageSize)
+    this.pageNumber = 0;
+    this.total = 0;
+    this.offset = 0;
    }
 
   ngOnInit(): void {
-    this.getCharacters(50);
+    this.getCharacters(this.pageSize,this.offset,this.searchText);
   }
 
-  getCharacters(lim: number){
-    axios.get(environment.endpoint+'/characters',{
+  getCharacters(lim: number, off: number,sw: string){
+    this.spinner = true;
+    var prm = {
       params: {
         "apikey": environment.publicKey,
         "ts": environment.ts,
         "hash": md5(environment.ts  + environment.privateKey + environment.publicKey),
-        "limit":lim
-    }})
+        "limit":lim,
+        "offset": off
+      }
+    };
+
+    if(sw != '' && sw != undefined){
+      prm.params["nameStartsWith"] = sw
+    }
+    if(this.selectedOption == 1){
+      prm.params["orderBy"] = "name"
+    }else if(this.selectedOption == 2){
+      prm.params["orderBy"] = "-name"
+    }else if(this.selectedOption == 3){
+      prm.params["orderBy"] = "modified"
+    }
+    axios.get(environment.endpoint+'/characters',prm)
     .then(response => {
         this.characters = response.data.data.results
         this.characters.forEach(e => {
@@ -49,6 +74,7 @@ export class CharactersComponent implements OnInit {
         });
         this.data = this.characters.slice(0, this.pageSize)
         this.spinner = false
+        this.total = response.data.data.total;
     })
     .catch(e => {
         this.spinner = false
@@ -68,7 +94,7 @@ export class CharactersComponent implements OnInit {
         day = '0' + day;
 
     return [year, month, day].join('-');
-}
+  }
 
   addFavorite() {
     this.favEvent.emit(this.favorites);
@@ -77,15 +103,14 @@ export class CharactersComponent implements OnInit {
   ngOnChanges(event){
     if(event.searchText){
       if(event.searchText.currentValue){
-        var copy = this.characters.filter(x => x.name.toUpperCase().includes(event.searchText.currentValue.toUpperCase()))
-        this.data = copy.slice(0, this.pageSize)
+        this.pageNumber = 0;
+        this.offset = this.pageNumber * this.pageSize
+        this.getCharacters(10,this.offset,event.searchText.currentValue);
       }else{
-        this.spinner = true
-        this.getCharacters(50);
+        this.getCharacters(10,this.offset,this.searchText);
       }
     }
     if(event.toDelete){
-      event.toDelete.currentValue
       var arr = this.favorites
       var newData: any[] = arr.filter(x => x.id !=event.toDelete.currentValue)
       if(!newData) newData = []
@@ -94,12 +119,19 @@ export class CharactersComponent implements OnInit {
     }
   }
 
-  sliceData(event?:PageEvent){
-    var index = event.pageIndex === 0 ? 1 : event.pageIndex + 1;
-    this.data = this.characters.slice((event.pageIndex) * event.pageSize, event.pageSize * index)
+  addOffset(){
+    if((this.pageNumber + 1) * this.pageSize <= this.total){
+      this.pageNumber = this.pageNumber + 1
+      this.offset = this.pageNumber * this.pageSize
+      this.getCharacters(10,this.offset,this.searchText);
+    }
   }
-  onChangePageSize(event: String){
-    console.log(event)
+  remOffset(){
+    if((this.pageNumber - 1) * this.pageSize >= 0){
+      this.pageNumber = this.pageNumber - 1
+      this.offset = this.pageNumber * this.pageSize
+      this.getCharacters(10,this.offset,this.searchText);
+    }
   }
 
   onClickComic(uri){
@@ -117,29 +149,10 @@ export class CharactersComponent implements OnInit {
   }
 
   handleSelect(event){
-    if(event.target.value == 1){
-      this.characters = this.characters.sort(function(a, b) {
-        var textA = a.name.toUpperCase();
-        var textB = b.name.toUpperCase();
-        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-      });
-    }else if(event.target.value == 2){
-      this.characters = this.characters.sort(function(a, b) {
-        var textA = a.name.toUpperCase();
-        var textB = b.name.toUpperCase();
-        return (textA > textB) ? -1 : (textA < textB) ? 1 : 0;
-      });
-    }else if(event.target.value == 3){
-      this.characters = this.characters.sort(function(a, b) {
-        var textA = a.modified.toString().toUpperCase();
-        var textB = b.modified.toString().toUpperCase();
-        return (textA > textB) ? -1 : (textA < textB) ? 1 : 0;
-      });
-    }else{
-      this.spinner = true
-      this.getCharacters(50);
-    }
-    this.data = this.characters.slice(0, this.pageSize)
+    this.selectedOption = event.target.value
+    this.pageNumber = 0;
+    this.offset = this.pageNumber * this.pageSize
+    this.getCharacters(10,this.offset,this.searchText)
   }
 
 }

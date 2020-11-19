@@ -44,12 +44,12 @@
       <!--Text-->
 
     <mdb-card-text>
-        <h5 class="indigo-text">
+        <h5 class="black-text">
             <strong>Description</strong>
         </h5>
         {{char.description ? char.description : 'No description aviable'}}
         <hr>
-        <h5 class="indigo-text">
+        <h5 class="black-text">
             <strong>Comics</strong>
         </h5>
         {{char.comics.items.length == 0 ? 'There are no comics for this character':''}}
@@ -60,18 +60,26 @@
         </ul>
     </mdb-card-text>
 
-      <a routerLink="/details/{{char.id}}" mdbBtn color="primary" mdbWavesEffect>See details</a>
+      <a routerLink="/details/{{char.id}}" mdbBtn color="danger" mdbWavesEffect>See details</a>
     </mdb-card-body>
   </mdb-card>
   <!-- Card -->
 
         </div>
     </div>
-    <div class="row">
-        <mat-paginator [length]="characters.length"
-            [pageSize]="pageSize"
-            (page)="sliceData($event)">
-        </mat-paginator>
+    <div class="row mt-5">
+      <div class="col-md-6 mt-1">
+        Items per page 10. 
+        Page {{pageNumber + 1}} of {{total//10}}.
+      </div>
+      <div class="col-md-6">
+        <nav aria-label="">
+          <ul class="pagination pg-blue">
+            <li class="page-item"><a class="page-link" (click)="remOffset()" mdbWavesEffect>Previous</a></li>
+            <li class="page-item"><a class="page-link" (click)="addOffset()" mdbWavesEffect>Next</a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 
