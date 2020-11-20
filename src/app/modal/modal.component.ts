@@ -4,6 +4,7 @@ import axios from 'axios';
 import md5 from 'md5';
 import {environment} from '../../environments/environment'
 import { Subject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-modal',
@@ -20,7 +21,7 @@ export class ModalComponent implements OnInit {
   comic: any;
   spinner: boolean;  
   favorite: boolean;  
-  constructor(public modalRef: MDBModalRef) {
+  constructor(public modalRef: MDBModalRef,private toastr: ToastrService) {
     this.spinner = true;
     this.favorite = false;  
   }
@@ -52,13 +53,13 @@ export class ModalComponent implements OnInit {
       var arr = this.favorites
       var newData = [...arr, this.comic]
       this.favorites = newData
-      //localStorage.setItem('favoriteComics',JSON.stringify(newData))
+      this.toastr.success('This comic was added to favorites', 'Added');
     }else{
       var arr = this.favorites
       var newData: any[] = arr.filter(x => x.id !=this.comic.id)
       if(!newData) newData = []
       this.favorites = newData
-      //localStorage.setItem('favoriteComics',JSON.stringify(newData))
+      this.toastr.error('This comic was removed from favorites', 'Removed');
     }
     this.favorite = this.checkIfFavourite(this.comic.id)
     this.action.next(this.favorites);

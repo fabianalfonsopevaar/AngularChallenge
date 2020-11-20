@@ -16,6 +16,8 @@ import { ComicsComponent } from './comics/comics.component';
 import { FormsModule } from '@angular/forms';
 import { CharaterDetailsComponent } from './charater-details/charater-details.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ToastrModule } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,10 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatPaginatorModule,
     MatExpansionModule,
     MDBBootstrapModulesPro.forRoot(),
-    FormsModule
+    FormsModule,
+    CommonModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(), // ToastrModule added
   ],
   entryComponents: [ ModalComponent ],
   providers: [MDBSpinningPreloader],

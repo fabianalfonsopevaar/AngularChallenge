@@ -6,14 +6,15 @@
   </div>
   <div  *ngIf="!spinner" class="div">
       <div class="row mt-4">
-        <div class="col-md ">Characters</div>
+        <div class="col-md "><img src="../assets/icons/characters.png"> Characters</div>
         <div class="col-md"></div>
         <div class="col-md">
-          <select class="browser-default custom-select" (change)="handleSelect($event)">
-            <option selected>Order by</option>
+          <select class="browser-default custom-select" [(ngModel)]="selectedOption" (change)="handleSelect($event)">
+            <option value="0" selected>Order by</option>
             <option value="1">Name A-Z</option>
             <option value="2">Name Z-A</option>
-            <option value="3">Date</option>
+            <option value="3">Date (Desc)</option>
+            <option value="4">Date (Asc)</option>
           </select>
         </div>
     </div>
@@ -70,7 +71,7 @@
     <div class="row mt-5">
       <div class="col-md-6 mt-1">
         Items per page 10. 
-        Page {{pageNumber + 1}} of {{total//10}}.
+        Page {{pageNumber + 1}} of {{totalShow}}.
       </div>
       <div class="col-md-6">
         <nav aria-label="">

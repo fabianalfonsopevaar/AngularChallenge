@@ -26,6 +26,8 @@ export class CharactersComponent implements OnInit {
   total: number;
   offset: number;
 
+  totalShow: number;
+
   @Input() searchText: string;
   @Input() toDelete: string;
   @Output() favEvent = new EventEmitter<any[]>();
@@ -38,6 +40,8 @@ export class CharactersComponent implements OnInit {
     this.pageNumber = 0;
     this.total = 0;
     this.offset = 0;
+
+    this.totalShow = 0;
    }
 
   ngOnInit(): void {
@@ -65,6 +69,8 @@ export class CharactersComponent implements OnInit {
       prm.params["orderBy"] = "-name"
     }else if(this.selectedOption == 3){
       prm.params["orderBy"] = "modified"
+    }else if(this.selectedOption == 4){
+      prm.params["orderBy"] = "-modified"
     }
     axios.get(environment.endpoint+'/characters',prm)
     .then(response => {
@@ -75,6 +81,7 @@ export class CharactersComponent implements OnInit {
         this.data = this.characters.slice(0, this.pageSize)
         this.spinner = false
         this.total = response.data.data.total;
+        this.totalShow = Math.ceil(this.total/10)
     })
     .catch(e => {
         this.spinner = false
@@ -107,6 +114,8 @@ export class CharactersComponent implements OnInit {
         this.offset = this.pageNumber * this.pageSize
         this.getCharacters(10,this.offset,event.searchText.currentValue);
       }else{
+        this.pageNumber = 0;
+        this.offset = this.pageNumber * this.pageSize
         this.getCharacters(10,this.offset,this.searchText);
       }
     }

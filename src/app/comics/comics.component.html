@@ -1,28 +1,27 @@
-<ul>
-    <div class="div mt-5">
-        <div class="row">
-            <div class="col-md-6 mt-3"><h4>My favourites</h4></div>
-            <div class="col-md-6"></div>
-        </div>
-        <div class="row mt-2" *ngFor="let com of arr">
-            <div class="col-md-2"></div>
-            <div class="col-md-8 border rounded">
-                <div class="row"><img src="{{com.thumbnail.path}}/portrait_large.{{com.thumbnail.extension}}" width="100%"></div>
-                <div class="row mt-2">
-                    <div class="col-md-6">{{com.title}}</div>
-                    <div class="col-md-2"></div>
-                    <div class="col-md-4">
-                        <a (click)="removeComic(com.id)">
-                        <mdb-badge pill="true" danger="true">
-                            <mdb-icon fas icon="trash-alt" size="2x">
-                                
-                            </mdb-icon>
-                        </mdb-badge>
-                    </a>
-                    </div>
+<div class="div mt-3">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8"><img src="../assets/icons/favourites.png">  My favourites</div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row mt-2" *ngFor="let com of arr">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 border rounded">
+            <div class="row"><img src="{{com.thumbnail.path}}/portrait_large.{{com.thumbnail.extension}}" width="100%"></div>
+            <div class="row mt-2">
+                <div class="col-md-6">{{com.title}}</div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <a (click)="removeComic(com.id)">
+                    <mdb-badge pill="true" danger="true">
+                        <mdb-icon fas icon="trash-alt" size="2x">
+                            
+                        </mdb-icon>
+                    </mdb-badge>
+                </a>
                 </div>
             </div>
-            <div class="col-md-2"></div>
         </div>
+        <div class="col-md-2"></div>
     </div>
-</ul>
+</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-comics',
@@ -11,7 +12,7 @@ export class ComicsComponent implements OnInit {
   @Input() favs: [];
   @Output() deleteEvent = new EventEmitter<number>();
 
-  constructor() {
+  constructor(private toastr: ToastrService) {
     
   }
 
@@ -24,5 +25,6 @@ export class ComicsComponent implements OnInit {
 
   removeComic(id){
       this.deleteEvent.emit(id);
+      this.toastr.error('This comic was removed from favorites', 'Removed');
   }
 }
