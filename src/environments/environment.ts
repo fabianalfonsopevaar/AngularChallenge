@@ -10,7 +10,7 @@ export const environment = {
   ts: '123',
   applicationId: 'sandbox-sq0idb-nnLSj0-2c9jDnFzCVTYdnA',
   locationId: 'LJZTBR6WY191F',
-  GCPFunction: 'https://us-central1-vivid-tuner-273919.cloudfunctions.net/square-checkout'
+  GCPFunction: 'https://us-central1-vivid-tuner-273919.cloudfunctions.net/square-checkout' 
 };
 
 /*
