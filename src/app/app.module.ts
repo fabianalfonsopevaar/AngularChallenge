@@ -15,6 +15,7 @@ import { MDBSpinningPreloader } from 'ng-uikit-pro-standard';
 import { ComicsComponent } from './comics/comics.component';
 import { FormsModule } from '@angular/forms';
 import { CharaterDetailsComponent } from './charater-details/charater-details.component';
+import { CheckoutComponent } from './checkout/checkout.component'
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
@@ -27,7 +28,8 @@ import { CommonModule } from '@angular/common';
     CharactersComponent,
     ModalComponent,
     ComicsComponent,
-    CharaterDetailsComponent
+    CharaterDetailsComponent,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,

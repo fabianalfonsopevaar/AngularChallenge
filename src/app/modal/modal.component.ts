@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { MDBModalRef } from 'ng-uikit-pro-standard';
 import axios from 'axios';
 import md5 from 'md5';
@@ -20,14 +22,24 @@ export class ModalComponent implements OnInit {
   favorites = [] as any;
   comic: any;
   spinner: boolean;  
-  favorite: boolean;  
-  constructor(public modalRef: MDBModalRef,private toastr: ToastrService) {
+  favorite: boolean;
+  price: number;
+
+  array: number[] = [10,100,1000];
+
+  constructor(public modalRef: MDBModalRef,private toastr: ToastrService, private router: Router) {
     this.spinner = true;
     this.favorite = false;  
+    const randomElement = this.array[Math.floor(Math.random() * this.array.length)];
+    this.price = Number.parseInt(Math.random()* randomElement + "")
   }
 
   ngOnInit(): void {
     this.getComic()
+  }
+
+  buy(){
+    this.router.navigate(['/buy/'+this.comic.id])
   }
 
   getComic(){
@@ -59,7 +71,7 @@ export class ModalComponent implements OnInit {
       var newData: any[] = arr.filter(x => x.id !=this.comic.id)
       if(!newData) newData = []
       this.favorites = newData
-      this.toastr.error('This comic was removed from favorites', 'Removed');
+      this.toastr.success('This comic was removed from favorites', 'Removed');
     }
     this.favorite = this.checkIfFavourite(this.comic.id)
     this.action.next(this.favorites);

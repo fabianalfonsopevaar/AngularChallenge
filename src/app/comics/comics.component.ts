@@ -25,6 +25,6 @@ export class ComicsComponent implements OnInit {
 
   removeComic(id){
       this.deleteEvent.emit(id);
-      this.toastr.error('This comic was removed from favorites', 'Removed');
+      this.toastr.success('This comic was removed from favorites', 'Removed');
   }
 }

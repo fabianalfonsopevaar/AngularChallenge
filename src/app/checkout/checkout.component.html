@@ -1,0 +1,33 @@
+<app-navbar (newItemEvent)="outText($event)"></app-navbar>
+
+<div class="container">
+    <div class="row" *ngIf="comic">
+        <div class="col-md-4">
+            <p>{{comic.title}}</p>
+            <img src="{{comic.images[0].path +'.'+ comic.images[0].extension}}" width="200" height="350"/>
+        </div>
+        <div class="col-md-8 mt-5">
+            <div [innerHTML]="comic.description"></div>
+            {{comic.description ? '' : 'There are no description for this comic'}}
+
+            <div *ngIf="comic.characters?.items" class="mt-3">
+                Characters tha are related: 
+                <ul>
+                    <div *ngFor="let char of comic.characters?.items">
+                        <li >{{char.name}}</li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div id="card-container"></div>
+        </div>
+        <button id="card-button" (click)="buySquare($event)" type="button" class="btn btn-success ml-16pt">
+            Buy for {{price}}$
+        </button>
+    </div>
+
+</div>
+

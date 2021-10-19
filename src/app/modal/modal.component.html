@@ -11,7 +11,7 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-md-4" *ngIf="comic">
-        <mdb-card-img src="{{comic.thumbnail.path}}/portrait_small.{{comic.thumbnail.extension}}"></mdb-card-img>
+        <mdb-card-img src="{{comic.thumbnail.path}}/portrait_xlarge.{{comic.thumbnail.extension}}"></mdb-card-img>
       </div>
       <div class="col-md-2"  *ngIf="spinner">
         <div class="spinner-border text-danger mt-5" role="status">
@@ -29,8 +29,17 @@
 
   </div>
   <div class="modal-footer">
-    <button type="button" mdbBtn color="black" class="waves-light" aria-label="Close" (click)="modalRef.hide()" mdbWavesEffect>Close</button>
-    <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="addToFavourite()" *ngIf="comic">{{favorite ? 'Remove from favourites':'Add to favourites'}}</button>
+    <div class="row">
+      <div class="col-md-4">
+        <button type="button" mdbBtn color="black" class="waves-light" aria-label="Close" (click)="modalRef.hide()" mdbWavesEffect>Close</button>
+      </div>
+      <div class="col-md-4">
+        <button type="button" mdbBtn color="danger" class="waves-light" (click)="buy()" mdbWavesEffect>Buy for {{price}} $</button>
+      </div>
+      <div class="col-md-4">
+        <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="addToFavourite()" *ngIf="comic">{{favorite ? 'Remove from favourites':'Add to favourites'}}</button>
+      </div>
+    </div>
   </div>
 
 </div>
