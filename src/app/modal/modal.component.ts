@@ -43,7 +43,7 @@ export class ModalComponent implements OnInit {
   }
 
   getComic(){
-    axios.get(this.resourceUri,{
+    axios.get(this.resourceUri.replace("http","https"),{
       params: {
         "apikey": environment.publicKey,
         "ts": environment.ts,
