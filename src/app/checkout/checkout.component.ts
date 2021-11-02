@@ -25,6 +25,12 @@ export class CheckoutComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    window['checkoutComponent'] = this;
+    const payPalScript = document.createElement("script");
+    payPalScript.type = "text/javascript";
+    payPalScript.src = "https://www.paypal.com/sdk/js?client-id=" + environment.pClientId;
+    document.head.appendChild(payPalScript);
+    
 
     this.route.params.subscribe(params => {
         this.getComic(params['id'])
@@ -34,6 +40,42 @@ export class CheckoutComponent implements OnInit {
     const payments = (<any>window).Square.payments(environment.applicationId,environment.locationId);
     this.card = await payments.card();
     await this.card.attach('#card-container');
+
+
+    const elementExist = document.getElementById('paypal-button-container');
+    if (elementExist) {
+      window['paypal'].Buttons({
+        locale: 'en_US',
+        style: {
+          color: 'gold',
+          shape: 'pill',
+          size: 'large',
+          label: 'pay',
+          height: 40,
+          layout: 'horizontal'
+        },
+        createOrder: function (data, actions) {
+          // This function sets up the details of the transaction, including the amount and line item details.
+          var amountFinal = window['checkoutComponent'].price;
+
+          var purchaseObj = {
+            intent: "CAPTURE",
+            purchase_units: [
+              {
+                amount: {
+                  value: amountFinal,
+                  currency_code: 'USD'
+                }
+              }
+            ]
+          };
+          return actions.order.create(purchaseObj);
+        },
+        onApprove: function (data, actions) {
+          window['checkoutComponent'].paypalOnApprove(data, actions);
+        }
+      }).render('#paypal-button-container');
+    }
   }
 
   async buySquare(event){
@@ -64,6 +106,9 @@ export class CheckoutComponent implements OnInit {
       this.toastr.error("Something wrong happened")
     })
   }
+  ngOnDestroy(): void {
+    window['checkoutComponent'] = undefined;
+  }
 
   getComic(id){
     axios.get(environment.endpoint+'/comics/'+id,{
@@ -83,6 +128,21 @@ export class CheckoutComponent implements OnInit {
 
   outText(event){
     
+  }
+
+  // this will handle when the transaction is approved
+  private paypalOnApprove(data: any, actions: any) {
+    // This function captures the funds from the transaction.
+    return actions.order.capture().then(details => {
+      // This function shows a transaction success message to your buyer.
+      if (details.status == "COMPLETED") {
+        const paymentId = details.purchase_units[0].payments.captures[0].id;
+        this.toastr.success("Payment succeded")
+        this.router.navigate(["/"])
+      } else {
+        this.toastr.error('Something went wrong while performing the Paypal payment. Payment Status: ' + details.status);
+      }
+    });
   }
 
 }
