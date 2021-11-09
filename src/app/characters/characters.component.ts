@@ -4,6 +4,7 @@ import { MDBModalRef, MDBModalService } from 'ng-uikit-pro-standard';
 import axios from 'axios';
 import md5 from 'md5';
 import {environment} from '../../environments/environment'
+import { ShoppingCartService } from '../service/shoppingCart.service';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class CharactersComponent implements OnInit {
   @Input() searchText: string;
   @Input() toDelete: string;
   @Output() favEvent = new EventEmitter<any[]>();
-  constructor(private modalService: MDBModalService) {
+  constructor(private modalService: MDBModalService, private cart: ShoppingCartService) {
     this.spinner = true
 
     this.selectedOption = 0;
@@ -148,7 +149,8 @@ export class CharactersComponent implements OnInit {
       data:
       {
         resourceUri: uri,
-        favorites: this.favorites
+        favorites: this.favorites,
+        cart: this.cart
       }
     })
     this.modalRef.content.action.subscribe( (result: any) => { 

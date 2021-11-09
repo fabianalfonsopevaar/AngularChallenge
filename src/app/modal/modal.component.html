@@ -39,6 +39,9 @@
       <div class="col-md-4">
         <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="addToFavourite()" *ngIf="comic">{{favorite ? 'Remove from favourites':'Add to favourites'}}</button>
       </div>
+      <div class="col-md-4">
+        <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="addToCart()" *ngIf="comic">Add to cart</button>
+      </div>
     </div>
   </div>
 

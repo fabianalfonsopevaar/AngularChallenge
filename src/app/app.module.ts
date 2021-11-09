@@ -16,9 +16,11 @@ import { ComicsComponent } from './comics/comics.component';
 import { FormsModule } from '@angular/forms';
 import { CharaterDetailsComponent } from './charater-details/charater-details.component';
 import { CheckoutComponent } from './checkout/checkout.component'
+import { ShoppingCartComponent } from './shoppingCart/shoppingCart.component'
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { ShoppingCartService } from './service/shoppingCart.service';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { CommonModule } from '@angular/common';
     ComicsComponent,
     CharaterDetailsComponent,
     CheckoutComponent,
+    ShoppingCartComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,7 @@ import { CommonModule } from '@angular/common';
     ToastrModule.forRoot(), // ToastrModule added
   ],
   entryComponents: [ ModalComponent ],
-  providers: [MDBSpinningPreloader],
+  providers: [MDBSpinningPreloader, ShoppingCartService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

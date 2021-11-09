@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { MDBModalRef } from 'ng-uikit-pro-standard';
@@ -7,6 +7,7 @@ import md5 from 'md5';
 import {environment} from '../../environments/environment'
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { ShoppingCartService } from '../service/shoppingCart.service';
 
 @Component({
   selector: 'app-modal',
@@ -27,7 +28,12 @@ export class ModalComponent implements OnInit {
 
   array: number[] = [10,100,1000];
 
-  constructor(public modalRef: MDBModalRef,private toastr: ToastrService, private router: Router) {
+  cart: ShoppingCartService;
+
+  constructor(public modalRef: MDBModalRef,
+    private toastr: ToastrService, 
+    private router: Router,
+    ) {
     this.spinner = true;
     this.favorite = false;  
     const randomElement = this.array[Math.floor(Math.random() * this.array.length)];
@@ -40,6 +46,16 @@ export class ModalComponent implements OnInit {
 
   buy(){
     this.router.navigate(['/buy/'+this.comic.id])
+  }
+
+  addToCart(){
+    this.cart.addItem(this.comic)
+    // let rta = await this.cart.addItem(this.comic)
+    // if(rta){
+       this.toastr.success('This comic was added to the cart', 'Added');
+    // }else{
+    //   this.toastr.error('This comic is already in the cart', 'Error');
+    // }
   }
 
   getComic(){
