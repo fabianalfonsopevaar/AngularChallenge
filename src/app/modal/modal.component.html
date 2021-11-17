@@ -33,8 +33,8 @@
       <div class="col-md-4">
         <button type="button" mdbBtn color="black" class="waves-light" aria-label="Close" (click)="modalRef.hide()" mdbWavesEffect>Close</button>
       </div>
-      <div class="col-md-4">
-        <button type="button" mdbBtn color="danger" class="waves-light" (click)="buy()" mdbWavesEffect>Buy for {{price}} $</button>
+      <div class="col-md-4" *ngIf="comic">
+        <button type="button" mdbBtn color="danger" class="waves-light" (click)="buy()" mdbWavesEffect>Buy for ${{comic.id}}</button>
       </div>
       <div class="col-md-4">
         <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="addToFavourite()" *ngIf="comic">{{favorite ? 'Remove from favourites':'Add to favourites'}}</button>
