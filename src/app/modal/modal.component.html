@@ -39,8 +39,10 @@
       <div class="col-md-4">
         <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="addToFavourite()" *ngIf="comic">{{favorite ? 'Remove from favourites':'Add to favourites'}}</button>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4" *ngIf="comic">
         <button type="button" mdbBtn color="danger" class="relative waves-light" mdbWavesEffect (click)="addToCart()" *ngIf="comic">Add to cart</button>
+        <input mdbInput type="number" name="text" [(ngModel)]="comic.qty" id="form1" class="form-control">
+
       </div>
     </div>
   </div>

@@ -49,13 +49,13 @@ export class ModalComponent implements OnInit {
   }
 
   addToCart(){
-    this.cart.addItem(this.comic)
-    // let rta = await this.cart.addItem(this.comic)
-    // if(rta){
+    let rta = this.cart.check(this.comic)
+    if(rta){
+      this.cart.addItem(this.comic)
        this.toastr.success('This comic was added to the cart', 'Added');
-    // }else{
-    //   this.toastr.error('This comic is already in the cart', 'Error');
-    // }
+    }else{
+      this.toastr.error('This comic is already in the cart', 'Error');
+    }
   }
 
   getComic(){

@@ -25,11 +25,12 @@ export class ShoppingCartComponent implements OnInit {
   constructor(private cart: ShoppingCartService,private toastr: ToastrService,private router: Router) {
 
     const randomElement = this.array[Math.floor(Math.random() * this.array.length)];
-    this.randomPrice = Number.parseInt(Math.random()* randomElement + "")
 
     this.items = this.cart.getItems()
+    this.calculateTotal()
     this.cart.eventEmitter.subscribe(x => {
       this.items = this.cart.getItems()
+      this.calculateTotal()
     })
    }
 
@@ -60,7 +61,7 @@ export class ShoppingCartComponent implements OnInit {
           },
           createOrder: function (data, actions) {
             // This function sets up the details of the transaction, including the amount and line item details.
-            var amountFinal = window['checkoutComponent'].price;
+            var amountFinal = window['checkoutComponent'].randomPrice;
 
             var purchaseObj = {
               intent: "CAPTURE",
@@ -84,6 +85,11 @@ export class ShoppingCartComponent implements OnInit {
   }
   outText(event){
   }
+
+  calculateTotal(){
+    this.randomPrice = this.items.map(x => x.id*x.qty).reduce((partial_sum, a) => partial_sum + a, 0);
+  }
+
   delete(id){
     this.cart.deleteItem(id)
   }

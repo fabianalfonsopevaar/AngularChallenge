@@ -53,17 +53,20 @@ export class ShoppingCartService {
     }
 
     addItem(item: any){
-        // console.log(this.items)
-        // console.log(item)
-        // if(this.items.some(x => x.id = item.id)){
-        //     return false
-        // }else{
-            this.items.push(item)
-            this.numberOfItems = this.items.length
-            this.saveInLocalStorage()
-            this.eventEmitter.emit(this.numberOfItems)
-        //     return true
-        // }
+        item.qty = item.qty ? item.qty : 1
+        item.total_price = item.id
+        this.items.push(item)
+        this.numberOfItems = this.items.length
+        this.saveInLocalStorage()
+        this.eventEmitter.emit(this.numberOfItems)
+    }
+    
+    check(item: any){
+        if(this.items.some(x => x.id === item.id)){
+            return false
+        }else{
+            return true
+        }
     }
 
     deleteItem(id){

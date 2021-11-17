@@ -76,6 +76,7 @@ export class CharactersComponent implements OnInit {
     axios.get(environment.endpoint+'/characters',prm)
     .then(response => {
         this.characters = response.data.data.results
+        console.log(this.characters)
         this.characters.forEach(e => {
           e.modified = this.formatDate(e.modified)
         });

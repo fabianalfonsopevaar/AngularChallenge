@@ -19,7 +19,9 @@
                     <th class="mr-5">Image</th>
                     <th class="mr-5">Name</th>
                     <th class="mr-5">Description</th>
-                    <th class="mr-5">Price</th>
+                    <th class="mr-5">Unit Price</th>
+                    <th class="mr-5">Qty</th>
+                    <th class="mr-5">Total Price</th>
                     <th class="mr-5">Actions</th>
                   </tr>
                 </thead>
@@ -32,6 +34,12 @@
                         <td class="mr-5">{{item.title}}</td>
                         <td class="mr-5">{{item.description}}</td>
                         <td class="mr-5">{{item.id}}</td>
+                        <td class="mr-5">
+                            <div class="md-form">
+                                <input mdbInput type="number" name="text" [(ngModel)]="item.qty" id="form1" class="form-control" (change)="calculateTotal()">
+                              </div>
+                        </td>
+                        <td class="mr-5">{{item.id * item.qty}}</td>
                         <td class="mr-5">
                             <button type="button" mdbBtn color="danger" rounded="true" size="sm" (click)="delete(item.id)"><mdb-icon fas icon="trash"></mdb-icon></button>
                         </td>
