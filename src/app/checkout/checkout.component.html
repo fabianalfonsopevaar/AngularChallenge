@@ -25,7 +25,7 @@
             <div id="card-container"></div>
         </div>
         <button id="card-button" (click)="buySquare($event)" type="button" class="btn btn-success ml-16pt" *ngIf="comic">
-            Buy for ${{comic.id}}
+            Buy for {{comic.id | currency:'USD'}}
         </button><br />
 
         <div id="paypal-button-container" style="display: flex; justify-content: center;">

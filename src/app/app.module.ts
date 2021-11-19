@@ -21,6 +21,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { ShoppingCartService } from './service/shoppingCart.service';
+import { ModalSuccessComponent } from './modal-success/modal-success.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { ShoppingCartService } from './service/shoppingCart.service';
     CharaterDetailsComponent,
     CheckoutComponent,
     ShoppingCartComponent,
+    ModalSuccessComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,7 @@ import { ShoppingCartService } from './service/shoppingCart.service';
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
   ],
-  entryComponents: [ ModalComponent ],
+  entryComponents: [ ModalComponent, ModalSuccessComponent ],
   providers: [MDBSpinningPreloader, ShoppingCartService],
   bootstrap: [AppComponent]
 })

@@ -4,6 +4,8 @@ import {environment} from '../../environments/environment'
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import axios from 'axios'
+import { MDBModalRef, MDBModalService } from 'ng-uikit-pro-standard';
+import { ModalSuccessComponent } from '../modal-success/modal-success.component';
 
 
 @Component({
@@ -21,8 +23,10 @@ export class ShoppingCartComponent implements OnInit {
   array: number[] = [10,100,1000];
 
   card: any;
+
+  modalRef: MDBModalRef;
   
-  constructor(private cart: ShoppingCartService,private toastr: ToastrService,private router: Router) {
+  constructor(private cart: ShoppingCartService,private toastr: ToastrService,private router: Router, private modalService: MDBModalService) {
 
     const randomElement = this.array[Math.floor(Math.random() * this.array.length)];
 
@@ -86,8 +90,28 @@ export class ShoppingCartComponent implements OnInit {
   outText(event){
   }
 
+  openModal(bool) {
+    this.modalRef = this.modalService.show(ModalSuccessComponent,{
+      data: {succeeded: bool}
+    })
+  }
+  closeModal() {
+    this.modalRef.hide()
+  }
+
   calculateTotal(){
-    this.randomPrice = this.items.map(x => x.id*x.qty).reduce((partial_sum, a) => partial_sum + a, 0);
+    let tmp = this.items.map(x => x.id*x.qty).reduce((partial_sum, a) => partial_sum + a, 0);
+    if(tmp && tmp <=0 ){
+      this.toastr.error("The amount MUST be greater than zero")
+      return
+    }else if(this.items.some(i => i.qty <= 0)){
+      this.toastr.error("The quantity of the items MUST be greater than zero")
+      this.items.forEach(i => {
+        if(i.qty <= 0) i.qty = 1
+      })
+      return
+    }
+    this.randomPrice = tmp
   }
 
   delete(id){
@@ -97,6 +121,7 @@ export class ShoppingCartComponent implements OnInit {
   async buySquare(event){
     event.preventDefault()
     try {
+      this.openModal(false)
       const result = await this.card.tokenize();
       if (result.status === 'OK') {
         this.takePayment(result.token); 
@@ -107,6 +132,15 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   takePayment(token){
+
+    if(this.randomPrice && this.randomPrice <=0 ){
+      this.toastr.error("The amount MUST be greater than zero")
+      return
+    }else if(this.items.some(i => i.qty <= 0)){
+      this.toastr.error("The quantity of the items MUST be greater than zero")
+      return
+    }
+
     const body = {
       Token: token,
       Name: 'Buy',
@@ -115,6 +149,8 @@ export class ShoppingCartComponent implements OnInit {
     
     axios.post(environment.GCPFunction, body)
     .then(res => {
+      this.closeModal()
+      this.openModal(true)
       this.toastr.success("Payment succeded")
       this.router.navigate(["/"])
       this.cart.clearCart()
